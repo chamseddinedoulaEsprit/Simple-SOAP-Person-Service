@@ -4,45 +4,44 @@
  * and open the template in the editor.
  */
 package com.info.service;
+
 import com.info.model.Person;
 import javax.jws.WebService;
-
-/**
- *
- * @author Administrator
- */
+import java.util.Collection;
 import java.util.HashMap;
 import java.util.Map;
-import java.util.Set;
-@WebService(endpointInterface ="com.poly.info.service.PersonService")
-public class PersonServiceImpl implements  PersonService{
-    private static Map<Integer,Person> persons =new HashMap<Integer,Person>();
+
+@WebService(endpointInterface = "com.info.service.PersonService")
+public class PersonServiceImpl implements PersonService {
+	private static Map<Integer, Person> persons = new HashMap<Integer, Person>();
 
 	@Override
 	public boolean addPerson(Person p) {
-		if(persons.get(p.getId())!=null)return false ;
-        persons.put(p.getId(),p) ;
-         return true ;
+		if (p == null) return false;
+		if (persons.get(p.getId()) != null) return false;
+		persons.put(p.getId(), p);
+		return true;
 	}
 
 	@Override
 	public boolean deletePerson(int id) {
-		// TODO Auto-generated method stub
-		return false;
+		return persons.remove(id) != null;
 	}
 
 	@Override
 	public Person getPersonByName(String name) {
-		// TODO Auto-generated method stub
+		if (name == null) return null;
+		Collection<Person> vals = persons.values();
+		for (Person p : vals) {
+			if (name.equals(p.getName())) return p;
+		}
 		return null;
 	}
 
 	@Override
 	public Person[] getAllPerson() {
-		// TODO Auto-generated method stub
-		return null;
+		Collection<Person> vals = persons.values();
+		return vals.toArray(new Person[0]);
 	}
-    
-    
-    
+
 }
